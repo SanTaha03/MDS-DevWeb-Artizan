@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from 'react'
-import { loginApi } from '../services/api'
+import { loginApi, registerApi } from '../services/api'
 import { toast } from 'react-toastify'
 
 const AuthContext = createContext()
@@ -10,7 +10,8 @@ const actionTypes = {
   LOGOUT: 'LOGOUT', // Déconnecté
   LOADING: 'LOADING', // Chargement
   ERROR: 'ERROR', // Erreur
-  RESET: 'RESET' // Réinitialisation de l'état
+  RESET: 'RESET', // Réinitialisation de l'état
+  SET_USER: 'SET_USER' // Modifier us
 }
 
 const initialState = {
@@ -48,7 +49,15 @@ const authReducer = (prevState, action) => {
       }
     case actionTypes.RESET:
     case actionTypes.LOGOUT:
+    {
       return initialState
+    }
+    case actionTypes.SET_USER:
+      return {
+        ...prevState,
+        loading: true,
+        user: action.data.user // Modif les infos user
+      }
     default:
       throw new Error(`Unhandled action type : ${action.type}`)
   }
@@ -80,12 +89,48 @@ const authFactory = (dispatch) => ({
   },
   logout: () => {
     dispatch({ type: actionTypes.LOGOUT })
+  },
+  register: async (credentials) => {
+    dispatch({ type: actionTypes.LOADING })
+    try {
+      const result = await registerApi(credentials)
+      dispatch({
+        type: actionTypes.REGISTER,
+        data: {
+          user: result.user,
+          jwt: result.jwt
+        }
+      })
+    } catch (error) {
+      console.error(error)
+      toast.error('Identfiant ou mot de passe incorrect')
+      dispatch({
+        type: actionTypes.ERROR,
+        data: {
+          error: 'Identifiant ou mot de passe incorrect'
+        }
+      })
+    }
+  },
+  setUser: (newUser) => {
+    dispatch({
+      type: actionTypes.SET_USER, data: { user: newUser }
+    })
   }
 })
 
 const AuthProvider = ({ children }) => {
   const savedState = window.localStorage.getItem('AUTH')
   const _initialState = savedState ? JSON.parse(savedState) : initialState
+
+  // Si le jeton n'est pas défini dans savedState mais qu'il existe dans le local storage,
+  // mettez à jour l'état initial avec le jeton du local storage.
+  if (_initialState.jwt === null) {
+    const savedJwt = window.localStorage.getItem('jwt')
+    if (savedJwt) {
+      _initialState.jwt = savedJwt
+    }
+  }
 
   const [state, dispatch] = useReducer(authReducer, _initialState)
 

@@ -5,8 +5,8 @@ import { Button, Input } from '@nextui-org/react'
 
 function LoginForm () {
   const [formData, setFormData] = useState({
-    identifier: 'jeanmich@mail.com',
-    password: 'jeanmich'
+    identifier: 'luffy@mail.com',
+    password: 'luffytaro'
   })
 
   const navigate = useNavigate()
@@ -58,7 +58,7 @@ function LoginForm () {
         type='submit'
         color='primary'
       >
-        Se connecter
+        SE CONNECTER
       </Button>
     </form>
   )

@@ -13,6 +13,7 @@ import Home from '../pages/Home'
 import Artisan from '../pages/Artisan'
 import Auth from '../pages/Auth'
 import Dashboard from '../pages/protected/Dashboard'
+import Profil from '../pages/protected/Profil'
 import PrivateRoute from './PrivateRouteMiddleware'
 
 function Router () {
@@ -30,6 +31,9 @@ function Router () {
         <Route path='authentication' element={<Auth />} />
         <Route path='dashboard' element={<PrivateRoute />}>
           <Route index element={<Dashboard />} />
+        </Route>
+        <Route path='profil' element={<PrivateRoute />}>
+          <Route index element={<Profil />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -24,3 +24,14 @@ header.main nav a {
 header.main nav a:hover {
   background-color: beige;
 }
+.profile-image-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Crée un cercle parfait */
+  overflow: hidden; /* Masque toute partie de l'image en dehors du cercle */
+}
+
+.profile-image {
+  width: 100%;
+  height: auto;
+}

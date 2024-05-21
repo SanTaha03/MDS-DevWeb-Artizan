@@ -1,4 +1,4 @@
-import { NextUIProvider } from '@nextui-org/react'
+import { Navbar, NextUIProvider } from '@nextui-org/react'
 import './App.css'
 import Header from './components/header/Header'
 import { AuthProvider } from './contexts/authContext.jsx'
@@ -12,6 +12,7 @@ function App () {
       <NextUIProvider>
         <AuthProvider>
           <Header />
+          <Navbar />
           <Router />
           <ToastContainer />
         </AuthProvider>

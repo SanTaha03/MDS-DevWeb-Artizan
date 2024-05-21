@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types'
 import ArtisansListItem from './ArtisansListItem'
 
-import './ArtisansList.css'
-
 function ArtisansList ({ artisans }) {
   if (!artisans || artisans.length < 1) {
     return 'No data'
